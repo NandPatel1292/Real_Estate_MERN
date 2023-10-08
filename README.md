@@ -15,6 +15,10 @@ This is a full-stack real estate web application designed to provide advanced au
 
 - **Deployment Made Easy**: Learn how to deploy your MERN real estate app for free using the 'render' platform.
 
+
+## Demo
+Check out the live demo of the application [here](https://real-estate-mern-2kef.onrender.com).
+
 ## Installation
 To run this application locally, follow these steps:
 
