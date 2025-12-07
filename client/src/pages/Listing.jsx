@@ -3,23 +3,20 @@ import { useParams } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore from 'swiper';
 import { useSelector } from 'react-redux';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Pagination, EffectFade, Autoplay } from 'swiper/modules';
 import 'swiper/css/bundle';
 import {
   FaBath,
   FaBed,
   FaChair,
-  FaMapMarkedAlt,
   FaMapMarkerAlt,
   FaParking,
   FaShare,
 } from 'react-icons/fa';
 import Contact from '../components/Contact';
 
-// https://sabe.io/blog/javascript-format-numbers-commas#:~:text=The%20best%20way%20to%20format,format%20the%20number%20with%20commas.
-
 export default function Listing() {
-  SwiperCore.use([Navigation]);
+  SwiperCore.use([Navigation, Pagination, EffectFade, Autoplay]);
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -51,29 +48,45 @@ export default function Listing() {
   }, [params.listingId]);
 
   return (
-    <main>
-      {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
+    <main className="bg-slate-50 min-h-screen">
+      {loading && <p className='text-center py-10 text-2xl text-slate-600 animate-pulse'>Loading listing details...</p>}
       {error && (
-        <p className='text-center my-7 text-2xl'>Something went wrong!</p>
+        <p className='text-center py-10 text-2xl text-red-600'>Something went wrong!</p>
       )}
+
       {listing && !loading && !error && (
-        <div>
-          <Swiper navigation>
-            {listing.imageUrls.map((url) => (
-              <SwiperSlide key={url}>
-                <div
-                  className='h-[550px]'
-                  style={{
-                    background: `url(${url}) center no-repeat`,
-                    backgroundSize: 'cover',
-                  }}
-                ></div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <div className='fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'>
-            <FaShare
-              className='text-slate-500'
+        <div className="animate-in fade-in duration-500">
+
+          {/* Gallery Section */}
+          <div className="w-full h-[50vh] md:h-[60vh] relative bg-slate-200">
+            <Swiper
+              navigation
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 4000, disableOnInteraction: false }}
+              loop
+              effect="fade"
+              className="h-full w-full"
+            >
+              {listing.imageUrls.map((url) => (
+                <SwiperSlide key={url}>
+                  <div className="h-full w-full bg-slate-200 flex items-center justify-center overflow-hidden relative">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center blur-md opacity-50 scale-110"
+                      style={{ backgroundImage: `url(${url})` }}
+                    ></div>
+                    <img
+                      src={url}
+                      alt={listing.name}
+                      className="relative h-full w-full object-cover z-10 shadow-sm"
+                      loading="lazy"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* Share Button (Overlapping Image) */}
+            < div className='absolute top-6 right-6 z-10 border border-white/20 rounded-full w-12 h-12 flex justify-center items-center bg-white/90 backdrop-blur-sm shadow-md cursor-pointer hover:bg-white transition-colors'
               onClick={() => {
                 navigator.clipboard.writeText(window.location.href);
                 setCopied(true);
@@ -81,73 +94,147 @@ export default function Listing() {
                   setCopied(false);
                 }, 2000);
               }}
-            />
-          </div>
-          {copied && (
-            <p className='fixed top-[23%] right-[5%] z-10 rounded-md bg-slate-100 p-2'>
-              Link copied!
-            </p>
-          )}
-          <div className='flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4'>
-            <p className='text-2xl font-semibold'>
-              {listing.name} - ${' '}
-              {listing.offer
-                ? listing.discountPrice.toLocaleString('en-US')
-                : listing.regularPrice.toLocaleString('en-US')}
-              {listing.type === 'rent' && ' / month'}
-            </p>
-            <p className='flex items-center mt-6 gap-2 text-slate-600  text-sm'>
-              <FaMapMarkerAlt className='text-green-700' />
-              {listing.address}
-            </p>
-            <div className='flex gap-4'>
-              <p className='bg-red-900 w-full max-w-[200px] text-white text-center p-1 rounded-md'>
-                {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
-              </p>
-              {listing.offer && (
-                <p className='bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md'>
-                  ${+listing.regularPrice - +listing.discountPrice} OFF
-                </p>
-              )}
+              title="Copy Link">
+              <FaShare className='text-slate-700' />
             </div>
-            <p className='text-slate-800'>
-              <span className='font-semibold text-black'>Description - </span>
-              {listing.description}
-            </p>
-            <ul className='text-green-900 font-semibold text-sm flex flex-wrap items-center gap-4 sm:gap-6'>
-              <li className='flex items-center gap-1 whitespace-nowrap '>
-                <FaBed className='text-lg' />
-                {listing.bedrooms > 1
-                  ? `${listing.bedrooms} beds `
-                  : `${listing.bedrooms} bed `}
-              </li>
-              <li className='flex items-center gap-1 whitespace-nowrap '>
-                <FaBath className='text-lg' />
-                {listing.bathrooms > 1
-                  ? `${listing.bathrooms} baths `
-                  : `${listing.bathrooms} bath `}
-              </li>
-              <li className='flex items-center gap-1 whitespace-nowrap '>
-                <FaParking className='text-lg' />
-                {listing.parking ? 'Parking spot' : 'No Parking'}
-              </li>
-              <li className='flex items-center gap-1 whitespace-nowrap '>
-                <FaChair className='text-lg' />
-                {listing.furnished ? 'Furnished' : 'Unfurnished'}
-              </li>
-            </ul>
-            {currentUser && listing.userRef !== currentUser._id && !contact && (
-              <button
-                onClick={() => setContact(true)}
-                className='bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3'
-              >
-                Contact landlord
-              </button>
+            {copied && (
+              <p className='absolute top-20 right-6 z-20 rounded-md bg-slate-800 text-white p-2 text-sm shadow-xl'>
+                Link copied!
+              </p>
             )}
-            {contact && <Contact listing={listing} />}
+          </div>
+
+          {/* Main Content Container */}
+          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10'>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+              {/* Left Column: Details */}
+              <div className="lg:col-span-2 space-y-8">
+
+                {/* Header */}
+                <div>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className={`px-3 py-1 rounded-md text-sm font-bold uppercase tracking-wide text-white ${listing.type === 'rent' ? 'bg-indigo-600' : 'bg-emerald-600'}`}>
+                      {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
+                    </span>
+                    {listing.offer && (
+                      <span className='px-3 py-1 rounded-md text-sm font-bold uppercase tracking-wide bg-rose-500 text-white'>
+                        Offer
+                      </span>
+                    )}
+                  </div>
+                  <h1 className='text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 leading-tight'>
+                    {listing.name}
+                  </h1>
+                  <p className='flex items-center gap-2 text-lg text-slate-600 font-medium'>
+                    <FaMapMarkerAlt className='text-emerald-600 flex-shrink-0' />
+                    {listing.address}
+                  </p>
+                </div>
+
+                {/* Features Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-6 border-y border-slate-200">
+                  <div className='flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm border border-slate-100 gap-2 text-center'>
+                    <FaBed className='text-3xl text-slate-400' />
+                    <span className="font-semibold text-slate-700 text-sm">
+                      {listing.bedrooms > 1 ? `${listing.bedrooms} Beds` : `${listing.bedrooms} Bed`}
+                    </span>
+                  </div>
+                  <div className='flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm border border-slate-100 gap-2 text-center'>
+                    <FaBath className='text-3xl text-slate-400' />
+                    <span className="font-semibold text-slate-700 text-sm">
+                      {listing.bathrooms > 1 ? `${listing.bathrooms} Baths` : `${listing.bathrooms} Bath`}
+                    </span>
+                  </div>
+                  <div className='flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm border border-slate-100 gap-2 text-center'>
+                    <FaParking className='text-3xl text-slate-400' />
+                    <span className="font-semibold text-slate-700 text-sm">
+                      {listing.parking ? 'Parking' : 'No Parking'}
+                    </span>
+                  </div>
+                  <div className='flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm border border-slate-100 gap-2 text-center'>
+                    <FaChair className='text-3xl text-slate-400' />
+                    <span className="font-semibold text-slate-700 text-sm">
+                      {listing.furnished ? 'Furnished' : 'Unfurnished'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div className="space-y-4">
+                  <h2 className="text-xl font-bold text-slate-800">Description</h2>
+                  <p className="text-slate-600 leading-relaxed whitespace-pre-line text-lg">
+                    {listing.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column: Sticky Sidebar */}
+              <div className="lg:col-span-1">
+                <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden sticky top-24">
+                  <div className="p-6 bg-slate-50 border-b border-slate-100">
+                    <p className="text-sm text-slate-500 font-medium mb-1">Price</p>
+                    <p className='text-3xl font-bold text-slate-900'>
+                      $
+                      {listing.offer
+                        ? listing.discountPrice.toLocaleString('en-US')
+                        : listing.regularPrice.toLocaleString('en-US')}
+                      {listing.type === 'rent' && <span className="text-lg text-slate-500 font-normal"> / month</span>}
+                    </p>
+                    {listing.offer && (
+                      <p className="text-sm text-rose-600 font-semibold mt-1">
+                        You save ${(+listing.regularPrice - +listing.discountPrice).toLocaleString('en-US')}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="p-6 flex flex-col gap-4">
+                    {currentUser && listing.userRef !== currentUser._id && (
+                      <>
+                        {!contact ? (
+                          <button
+                            onClick={() => setContact(true)}
+                            className='w-full btn-primary py-3 text-lg shadow-lg shadow-blue-200'
+                          >
+                            Contact Landlord
+                          </button>
+                        ) : (
+                          <div className="animate-in fade-in zoom-in-95 duration-300">
+                            <div className="flex justify-between items-center mb-4">
+                              <h3 className="font-bold text-slate-800">Send Message</h3>
+                              <button onClick={() => setContact(false)} className="text-sm text-slate-400 hover:text-slate-600">Cancel</button>
+                            </div>
+                            <Contact listing={listing} />
+                          </div>
+                        )}
+                      </>
+                    )}
+
+                    {!currentUser && (
+                      <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
+                        <p className="text-blue-800 font-medium mb-2">Interested in this property?</p>
+                        <button
+                          onClick={() => setContact(true)}
+                          className='w-full bg-white text-blue-600 border border-blue-200 font-bold py-2 px-4 rounded-lg hover:bg-blue-600 hover:text-white transition-all'
+                        >
+                          Contact Landlord
+                        </button>
+                      </div>
+                    )}
+
+                    {currentUser && listing.userRef === currentUser._id && (
+                      <div className="p-4 bg-yellow-50 rounded-xl border border-yellow-100 text-center">
+                        <p className="text-yellow-800 font-medium">This is your listing</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      )}
-    </main>
+      )
+      }
+    </main >
   );
 }

@@ -20,30 +20,31 @@ export default function Contact({ listing }) {
     };
     fetchLandlord();
   }, [listing.userRef]);
+
   return (
     <>
       {landlord && (
-        <div className='flex flex-col gap-2'>
-          <p>
-            Contact <span className='font-semibold'>{landlord.username}</span>{' '}
-            for{' '}
-            <span className='font-semibold'>{listing.name.toLowerCase()}</span>
+        <div className='flex flex-col gap-4'>
+          <p className="text-slate-600">
+            Contact <span className='font-semibold text-slate-900'>{landlord.username}</span>{' '}
+            regarding{' '}
+            <span className='font-semibold text-slate-900'>{listing.name.toLowerCase()}</span>
           </p>
           <textarea
             name='message'
             id='message'
-            rows='2'
+            rows='4'
             value={message}
             onChange={onChange}
-            placeholder='Enter your message here...'
-            className='w-full border p-3 rounded-lg'
+            placeholder='Hi, I am interested in this property...'
+            className='input-field'
           ></textarea>
 
           <Link
-          to={`mailto:${landlord.email}?subject=Regarding ${listing.name}&body=${message}`}
-          className='bg-slate-700 text-white text-center p-3 uppercase rounded-lg hover:opacity-95'
+            to={`mailto:${landlord.email}?subject=Regarding ${listing.name}&body=${message}`}
+            className='btn-primary text-center'
           >
-            Send Message          
+            Send Email
           </Link>
         </div>
       )}

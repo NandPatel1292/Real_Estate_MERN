@@ -170,217 +170,249 @@ export default function CreateListing() {
     }
   };
   return (
-    <main className='p-3 max-w-4xl mx-auto'>
-      <h1 className='text-3xl font-semibold text-center my-7'>
-        Update a Listing
-      </h1>
-      <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-4'>
-        <div className='flex flex-col gap-4 flex-1'>
-          <input
-            type='text'
-            placeholder='Name'
-            className='border p-3 rounded-lg'
-            id='name'
-            maxLength='62'
-            minLength='10'
-            required
-            onChange={handleChange}
-            value={formData.name}
-          />
-          <textarea
-            type='text'
-            placeholder='Description'
-            className='border p-3 rounded-lg'
-            id='description'
-            required
-            onChange={handleChange}
-            value={formData.description}
-          />
-          <input
-            type='text'
-            placeholder='Address'
-            className='border p-3 rounded-lg'
-            id='address'
-            required
-            onChange={handleChange}
-            value={formData.address}
-          />
-          <div className='flex gap-6 flex-wrap'>
-            <div className='flex gap-2'>
+    <main className='p-3 sm:p-10 min-h-screen bg-slate-50'>
+      <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
+        <div className="bg-slate-800 p-8 text-white text-center sm:text-left">
+          <h1 className='text-3xl font-extrabold'>Update Listing</h1>
+          <p className="text-slate-400 mt-2">Edit property details</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className='p-8 flex flex-col md:flex-row gap-10'>
+          {/* Left Column: Details */}
+          <div className='flex flex-col gap-6 flex-1'>
+
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-700 border-b border-slate-200 pb-2">Property Details</h2>
               <input
-                type='checkbox'
-                id='sale'
-                className='w-5'
-                onChange={handleChange}
-                checked={formData.type === 'sale'}
-              />
-              <span>Sell</span>
-            </div>
-            <div className='flex gap-2'>
-              <input
-                type='checkbox'
-                id='rent'
-                className='w-5'
-                onChange={handleChange}
-                checked={formData.type === 'rent'}
-              />
-              <span>Rent</span>
-            </div>
-            <div className='flex gap-2'>
-              <input
-                type='checkbox'
-                id='parking'
-                className='w-5'
-                onChange={handleChange}
-                checked={formData.parking}
-              />
-              <span>Parking spot</span>
-            </div>
-            <div className='flex gap-2'>
-              <input
-                type='checkbox'
-                id='furnished'
-                className='w-5'
-                onChange={handleChange}
-                checked={formData.furnished}
-              />
-              <span>Furnished</span>
-            </div>
-            <div className='flex gap-2'>
-              <input
-                type='checkbox'
-                id='offer'
-                className='w-5'
-                onChange={handleChange}
-                checked={formData.offer}
-              />
-              <span>Offer</span>
-            </div>
-          </div>
-          <div className='flex flex-wrap gap-6'>
-            <div className='flex items-center gap-2'>
-              <input
-                type='number'
-                id='bedrooms'
-                min='1'
-                max='10'
+                type='text'
+                placeholder='Property Name'
+                className='border border-slate-200 bg-slate-50 p-4 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all font-medium'
+                id='name'
+                maxLength='62'
+                minLength='10'
                 required
-                className='p-3 border border-gray-300 rounded-lg'
                 onChange={handleChange}
-                value={formData.bedrooms}
+                value={formData.name}
               />
-              <p>Beds</p>
-            </div>
-            <div className='flex items-center gap-2'>
-              <input
-                type='number'
-                id='bathrooms'
-                min='1'
-                max='10'
+              <textarea
+                type='text'
+                placeholder='Description'
+                className='border border-slate-200 bg-slate-50 p-4 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all min-h-[120px]'
+                id='description'
                 required
-                className='p-3 border border-gray-300 rounded-lg'
                 onChange={handleChange}
-                value={formData.bathrooms}
+                value={formData.description}
               />
-              <p>Baths</p>
-            </div>
-            <div className='flex items-center gap-2'>
               <input
-                type='number'
-                id='regularPrice'
-                min='50'
-                max='10000000'
+                type='text'
+                placeholder='Address'
+                className='border border-slate-200 bg-slate-50 p-4 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all'
+                id='address'
                 required
-                className='p-3 border border-gray-300 rounded-lg'
                 onChange={handleChange}
-                value={formData.regularPrice}
+                value={formData.address}
               />
-              <div className='flex flex-col items-center'>
-                <p>Regular price</p>
-                {formData.type === 'rent' && (
-                  <span className='text-xs'>($ / month)</span>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-700 border-b border-slate-200 pb-2">Key Features</h2>
+              <div className='flex gap-6 flex-wrap'>
+                <label className='flex gap-2 cursor-pointer items-center'>
+                  <input
+                    type='checkbox'
+                    id='sale'
+                    className='w-5 h-5 accent-slate-800'
+                    onChange={handleChange}
+                    checked={formData.type === 'sale'}
+                  />
+                  <span className="font-medium text-slate-700">Sell</span>
+                </label>
+                <label className='flex gap-2 cursor-pointer items-center'>
+                  <input
+                    type='checkbox'
+                    id='rent'
+                    className='w-5 h-5 accent-slate-800'
+                    onChange={handleChange}
+                    checked={formData.type === 'rent'}
+                  />
+                  <span className="font-medium text-slate-700">Rent</span>
+                </label>
+                <label className='flex gap-2 cursor-pointer items-center'>
+                  <input
+                    type='checkbox'
+                    id='parking'
+                    className='w-5 h-5 accent-slate-800'
+                    onChange={handleChange}
+                    checked={formData.parking}
+                  />
+                  <span className="font-medium text-slate-700">Parking spot</span>
+                </label>
+                <label className='flex gap-2 cursor-pointer items-center'>
+                  <input
+                    type='checkbox'
+                    id='furnished'
+                    className='w-5 h-5 accent-slate-800'
+                    onChange={handleChange}
+                    checked={formData.furnished}
+                  />
+                  <span className="font-medium text-slate-700">Furnished</span>
+                </label>
+                <label className='flex gap-2 cursor-pointer items-center'>
+                  <input
+                    type='checkbox'
+                    id='offer'
+                    className='w-5 h-5 accent-slate-800'
+                    onChange={handleChange}
+                    checked={formData.offer}
+                  />
+                  <span className="font-medium text-slate-700">Offer</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-700 border-b border-slate-200 pb-2">Specs & Pricing</h2>
+              <div className='flex flex-wrap gap-6'>
+                <div className='flex items-center gap-2 bg-slate-50 p-3 rounded-lg border border-slate-200'>
+                  <input
+                    type='number'
+                    id='bedrooms'
+                    min='1'
+                    max='10'
+                    required
+                    className='p-2 border border-gray-300 rounded-lg w-16 text-center'
+                    onChange={handleChange}
+                    value={formData.bedrooms}
+                  />
+                  <p className="font-semibold text-slate-600">Beds</p>
+                </div>
+                <div className='flex items-center gap-2 bg-slate-50 p-3 rounded-lg border border-slate-200'>
+                  <input
+                    type='number'
+                    id='bathrooms'
+                    min='1'
+                    max='10'
+                    required
+                    className='p-2 border border-gray-300 rounded-lg w-16 text-center'
+                    onChange={handleChange}
+                    value={formData.bathrooms}
+                  />
+                  <p className="font-semibold text-slate-600">Baths</p>
+                </div>
+                <div className='flex items-center gap-2 bg-slate-50 p-3 rounded-lg border border-slate-200'>
+                  <input
+                    type='number'
+                    id='regularPrice'
+                    min='50'
+                    max='10000000'
+                    required
+                    className='p-2 border border-gray-300 rounded-lg w-28 text-center'
+                    onChange={handleChange}
+                    value={formData.regularPrice}
+                  />
+                  <div className='flex flex-col'>
+                    <p className="font-semibold text-slate-600">Regular Price</p>
+                    {formData.type === 'rent' && (
+                      <span className='text-xs text-slate-400'>($ / month)</span>
+                    )}
+                  </div>
+                </div>
+                {formData.offer && (
+                  <div className='flex items-center gap-2 bg-rose-50 p-3 rounded-lg border border-rose-100'>
+                    <input
+                      type='number'
+                      id='discountPrice'
+                      min='0'
+                      max='10000000'
+                      required
+                      className='p-2 border border-rose-200 rounded-lg w-28 text-center bg-white'
+                      onChange={handleChange}
+                      value={formData.discountPrice}
+                    />
+                    <div className='flex flex-col'>
+                      <p className="font-semibold text-rose-600">Discounted Price</p>
+                      {formData.type === 'rent' && (
+                        <span className='text-xs text-rose-400'>($ / month)</span>
+                      )}
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
-            {formData.offer && (
-              <div className='flex items-center gap-2'>
+          </div>
+
+          {/* Right Column: Images */}
+          <div className='flex flex-col gap-6 flex-1'>
+            <h2 className="text-xl font-bold text-slate-700 border-b border-slate-200 pb-2">Property Images</h2>
+            <div className="bg-slate-50 p-6 rounded-2xl border-2 border-dashed border-slate-300 flex flex-col gap-4">
+              <p className='font-semibold text-slate-600 mb-2'>
+                Upload Images
+                <span className='font-normal text-slate-400 ml-2 text-sm block sm:inline'>
+                  (Max 6 images, less than 2MB each)
+                </span>
+              </p>
+              <div className='flex flex-col sm:flex-row gap-4'>
                 <input
-                  type='number'
-                  id='discountPrice'
-                  min='0'
-                  max='10000000'
-                  required
-                  className='p-3 border border-gray-300 rounded-lg'
-                  onChange={handleChange}
-                  value={formData.discountPrice}
-                />
-                <div className='flex flex-col items-center'>
-                  <p>Discounted price</p>
-                  {formData.type === 'rent' && (
-                    <span className='text-xs'>($ / month)</span>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className='flex flex-col flex-1 gap-4'>
-          <p className='font-semibold'>
-            Images:
-            <span className='font-normal text-gray-600 ml-2'>
-              The first image will be the cover (max 6)
-            </span>
-          </p>
-          <div className='flex gap-4'>
-            <input
-              onChange={(e) => setFiles(e.target.files)}
-              className='p-3 border border-gray-300 rounded w-full'
-              type='file'
-              id='images'
-              accept='image/*'
-              multiple
-            />
-            <button
-              type='button'
-              disabled={uploading}
-              onClick={handleImageSubmit}
-              className='p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80'
-            >
-              {uploading ? 'Uploading...' : 'Upload'}
-            </button>
-          </div>
-          <p className='text-red-700 text-sm'>
-            {imageUploadError && imageUploadError}
-          </p>
-          {formData.imageUrls.length > 0 &&
-            formData.imageUrls.map((url, index) => (
-              <div
-                key={url}
-                className='flex justify-between p-3 border items-center'
-              >
-                <img
-                  src={url}
-                  alt='listing image'
-                  className='w-20 h-20 object-contain rounded-lg'
+                  onChange={(e) => setFiles(e.target.files)}
+                  className='p-3 border border-slate-300 rounded w-full bg-white text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100'
+                  type='file'
+                  id='images'
+                  accept='image/*'
+                  multiple
                 />
                 <button
                   type='button'
-                  onClick={() => handleRemoveImage(index)}
-                  className='p-3 text-red-700 rounded-lg uppercase hover:opacity-75'
+                  disabled={uploading}
+                  onClick={handleImageSubmit}
+                  className='p-3 text-green-700 border border-green-700 rounded-lg uppercase hover:shadow-lg disabled:opacity-80 transition-all font-bold hover:bg-green-50'
                 >
-                  Delete
+                  {uploading ? 'Uploading...' : 'Upload'}
                 </button>
               </div>
-            ))}
-          <button
-            disabled={loading || uploading}
-            className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
-          >
-            {loading ? 'Updating...' : 'Update listing'}
-          </button>
-          {error && <p className='text-red-700 text-sm'>{error}</p>}
-        </div>
-      </form>
+            </div>
+            <p className='text-red-600 text-sm font-medium'>
+              {imageUploadError && imageUploadError}
+            </p>
+
+            {/* Image Previews */}
+            <div className="grid grid-cols-2 gap-4">
+              {formData.imageUrls.length > 0 &&
+                formData.imageUrls.map((url, index) => (
+                  <div
+                    key={url}
+                    className='relative group rounded-xl overflow-hidden shadow-sm border border-slate-200 aspect-square'
+                  >
+                    <img
+                      src={url}
+                      alt='listing image'
+                      className='w-full h-full object-cover'
+                    />
+                    <button
+                      type='button'
+                      onClick={() => handleRemoveImage(index)}
+                      className='absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full shadow-lg opacity-80 hover:opacity-100 transition-opacity'
+                      title="Delete Image"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+            </div>
+
+            <div className="mt-auto">
+              <button
+                disabled={loading || uploading}
+                className='w-full p-4 bg-slate-800 text-white rounded-xl uppercase font-bold text-lg hover:bg-slate-900 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all disabled:opacity-70'
+              >
+                {loading ? 'Updating...' : 'Update Listing'}
+              </button>
+              {error && <p className='text-red-600 text-sm mt-4 text-center'>{error}</p>}
+            </div>
+          </div>
+        </form>
+      </div>
     </main>
   );
 }
