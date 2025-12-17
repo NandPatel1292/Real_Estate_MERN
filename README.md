@@ -1,4 +1,4 @@
-# MERN Estate Marketplace
+# UrbanNest - A Real Estate Marketplace
 
 A full-stack real estate marketplace application built with the MERN stack (MongoDB, Express.js, React, Node.js). This platform allows users to list, search, and manage property listings for sale or rent.
 
